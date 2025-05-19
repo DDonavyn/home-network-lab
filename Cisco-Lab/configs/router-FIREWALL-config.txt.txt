@@ -1,0 +1,23 @@
+interface GigabitEthernet0/0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ ip address 192.168.1.1 255.255.255.0
+ ip access-group FIREWALL-IN in
+ duplex auto
+ speed auto
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+ip access-list extended FIREWALL-IN
+ permit icmp any any
+ permit tcp any any eq 22
+ permit tcp any any eq 443
+ permit ip any any log
