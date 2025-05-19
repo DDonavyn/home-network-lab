@@ -1,0 +1,101 @@
+megumin#show run
+Building configuration...
+
+Current configuration : 1341 bytes
+!
+! Last configuration change at 19:54:54 UTC Mon May 19 2025
+!
+version 15.1
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname megumin
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$XgNQ$LeO2p/mHYGPNB2Eskh5Ys1
+!
+no aaa new-model
+!
+!
+no ipv6 cef
+ip source-route
+ip cef
+!
+!
+!
+!
+!
+ip domain name local
+!
+multilink bundle-name authenticated
+!
+crypto pki token default removal timeout 0
+!
+!
+license udi pid CISCO1921/K9 sn FTX153480DN
+!
+!
+vtp domain Motherlode
+vtp mode transparent
+username admin privilege 15 secret 5 $1$Syn.$v69O63pRYPvnrF5zgPQ3F.
+username testuser secret 5 $1$EAzL$QqDdudav5CGB3SvzPEX9Z.
+!
+redundancy
+!
+!
+!
+!
+ip ssh version 2
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ ip address 192.168.1.1 255.255.255.0
+ ip access-group 100 in
+ duplex auto
+ speed auto
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+access-list 100 permit icmp any any
+access-list 100 permit tcp any any eq 22
+access-list 100 permit tcp any any eq 443
+access-list 100 deny   ip any any log
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ password cisco1
+ login
+line aux 0
+line vty 0 4
+ password cisco2
+ login local
+ transport input ssh
+!
+scheduler allocate 20000 1000
+end
